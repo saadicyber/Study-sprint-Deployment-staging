@@ -1,0 +1,14 @@
+{
+  "name": "study-sprint-app",
+  "version": "1.0.0",
+  "description": "Small project deployed to a staging environment as part of the Web Dev Track.",
+  "scripts": {
+    "build": "node build.js",
+    "start:staging": "cross-env APP_ENV=staging PORT=4000 node server.js",
+    "start:production": "cross-env APP_ENV=production PORT=8080 node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cross-env": "^7.0.3"
+  }
+}

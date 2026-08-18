@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Sprint — staging</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <style>
+      /* ── Reset & base ── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #0f0f13;
+        --surface: #1a1a22;
+        --surface-2: #25252f;
+        --line: #2e2e3a;
+        --ink: #e8e6e3;
+        --ink-soft: #9b99a3;
+        --amber: #f5a623;
+        --amber-soft: rgba(245, 166, 35, 0.12);
+        --teal: #2dd4bf;
+        --teal-soft: rgba(45, 212, 191, 0.12);
+        --danger: #ef4444;
+        --danger-soft: rgba(239, 68, 68, 0.1);
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+        --radius: 1rem;
+        --font: "Inter", system-ui, sans-serif;
+      }
+
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--ink);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        line-height: 1.6;
+      }
+
+      /* ── Environment banner ── */
+      .env-banner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        padding: 0.35rem 0;
+        z-index: 100;
+        animation: slideDown 0.5s ease-out;
+      }
+
+      .env-banner.staging {
+        background: linear-gradient(135deg, var(--amber), #e09100);
+        color: #1a1a22;
+      }
+
+      .env-banner.production {
+        background: linear-gradient(135deg, var(--teal), #14b8a6);
+        color: #1a1a22;
+      }
+
+      @keyframes slideDown {
+        from { transform: translateY(-100%); }
+        to { transform: translateY(0); }
+      }
+
+      /* ── Main card ── */
+      .card {
+        background: var(--surface);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--line);
+        padding: clamp(2rem, 5vw, 3rem);
+        max-width: 34rem;
+        width: 100%;
+        text-align: center;
+        animation: fadeUp 0.6s ease-out;
+        margin-top: 1.5rem;
+      }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(1.5rem); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .card h1 {
+        font-size: clamp(1.75rem, 4vw, 2.25rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.25rem;
+        background: linear-gradient(135deg, var(--amber), var(--teal));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .card .tagline {
+        font-size: 0.9rem;
+        color: var(--ink-soft);
+        margin-bottom: 2rem;
+      }
+
+      /* ── Environment info grid ── */
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+      }
+
+      .info-item {
+        background: var(--surface-2);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        border: 1px solid var(--line);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .info-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      .info-item .label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--ink-soft);
+        margin-bottom: 0.25rem;
+      }
+
+      .info-item .value {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .info-item .value.env-staging {
+        color: var(--amber);
+      }
+
+      .info-item .value.env-production {
+        color: var(--teal);
+      }
+
+      /* ── Status badge ── */
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 9999px;
+        padding: 0.5rem 1.25rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        background: var(--teal-soft);
+        color: var(--teal);
+        margin-bottom: 1.5rem;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      .status-badge .dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: var(--teal);
+        animation: blink 1.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.2); }
+        50% { box-shadow: 0 0 0 8px rgba(45, 212, 191, 0); }
+      }
+
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+      }
+
+      /* ── Health link ── */
+      .health-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        color: var(--ink-soft);
+        font-size: 0.8rem;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        border: 1px solid var(--line);
+        transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      }
+
+      .health-link:hover {
+        color: var(--teal);
+        border-color: var(--teal);
+        background: var(--teal-soft);
+      }
+
+      .health-link svg {
+        width: 0.875rem;
+        height: 0.875rem;
+        fill: currentColor;
+      }
+
+      /* ── Footer ── */
+      footer {
+        margin-top: 2rem;
+        font-size: 0.7rem;
+        color: var(--ink-soft);
+        letter-spacing: 0.06em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Environment banner -->
+    <div class="env-banner staging" id="env-banner">
+      ● staging environment
+    </div>
+
+    <!-- Main card -->
+    <div class="card">
+      <h1>Study Sprint</h1>
+      <p class="tagline">Focus session tracker · Deployment demo</p>
+
+      <!-- Status badge -->
+      <div class="status-badge">
+        <span class="dot"></span>
+        Server is live
+      </div>
+
+      <!-- Info grid -->
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Environment</div>
+          <div class="value env-staging" id="env-value">staging</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Status</div>
+          <div class="value">Running</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Built at</div>
+          <div class="value" id="build-time">—</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Node.js</div>
+          <div class="value" id="node-version">—</div>
+        </div>
+      </div>
+
+      <!-- Health check link -->
+      <a class="health-link" href="/health">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm-.75 10.25l-3-3 1.06-1.06L7.25 9.13l3.44-3.44 1.06 1.06-4.5 4.5z"/>
+        </svg>
+        Health check endpoint →
+      </a>
+    </div>
+
+    <footer>
+      Web Dev Track · Session 8 Entry-Level Task
+    </footer>
+
+    <script>
+      // Display build timestamp
+      document.getElementById("build-time").textContent =
+        new Date().toLocaleString();
+    </script>
+  </body>
+</html>
