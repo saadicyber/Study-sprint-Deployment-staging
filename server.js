@@ -12,6 +12,7 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const APP_ENV = process.env.APP_ENV || "development";
+const packageJson = require("./package.json");
 
 app.use(express.static(path.join(__dirname, "dist")));
 
@@ -20,7 +21,14 @@ app.use(express.static(path.join(__dirname, "dist")));
 app.get("/health", (req, res) => {
   res.json({ status: "ok", environment: APP_ENV });
 });
-
+// Returns the app version and current environment — useful for
+// confirming exactly what's deployed without digging through logs.
+app.get("/version", (req, res) => {
+  res.json({
+    version: packageJson.version,
+    environment: APP_ENV,
+  });
+});
 app.listen(PORT, () => {
   console.log(`Server running in [${APP_ENV}] mode on http://localhost:${PORT}`);
 });
