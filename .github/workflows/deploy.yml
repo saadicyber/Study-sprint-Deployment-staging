@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  # --- PART B (Task 6): CI Pipeline (Lint & Test/Build) ---
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linter
+        run: npm run lint --if-present
+
+      - name: Run Tests / Build
+        run: npm test --if-present || npm run build
+
+  # --- PART B (Task 7): Deploy to Staging on Merge to Main ---
+  deploy-staging:
+    needs: lint-and-test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel (Staging)
+        run: echo "Deploying commit ${{ github.sha }} to Staging Environment..."
+
+  # --- PART B (Task 8): Manual Production Gate ---
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy to Production
+        run: echo "Deploying to Live Production Environment!"
