@@ -25,8 +25,8 @@ jobs:
       - name: Run Linter
         run: npm run lint --if-present
 
-      - name: Run Tests / Build
-        run: npm test --if-present || npm run build
+      - name: Run Tests
+        run: npm test 
 
   # --- PART B (Task 7): Deploy to Staging on Merge to Main ---
   deploy-staging:
